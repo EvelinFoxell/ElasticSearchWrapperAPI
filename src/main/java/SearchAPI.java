@@ -1,19 +1,22 @@
-import javax.ws.rs.ApplicationPath;
+import services.RestHelper;
+
+import javax.json.JsonObject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.nio.charset.StandardCharsets;
 
-@Path("/api")
+@Path("/api/v1")
 public class SearchAPI {
+
+    private RestHelper restHelper = new RestHelper();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response applicationBase() {
-        String json = "{" +
-                "\"message\": \"Welcome to the API!\"" +
-                "}";
-        return Response.ok(json, MediaType.APPLICATION_JSON).build();
+        JsonObject welcomeMessage = restHelper.buildAPIInstructions();
+        return Response.ok(welcomeMessage, MediaType.APPLICATION_JSON).encoding(StandardCharsets.UTF_8.name()).build();
     }
 }
