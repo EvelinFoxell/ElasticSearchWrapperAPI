@@ -31,7 +31,7 @@ public class SearchAPI {
     public Response searchMatchWithSentiment(@QueryParam("query") String query, @QueryParam("sentiment") String sentiment) {
         // TODO: Validate the input
         SearchQuery searchQuery = new SearchQuery(query, sentiment);
-        JsonArray results = searchService.getSearchResults(searchQuery);
+        JsonArray results = restHelper.cleanResultArrayToReturnRelevantFields(searchService.getSearchResults(searchQuery));
         if(results == null || query == null) {
             return Response.status(400).encoding(MediaType.APPLICATION_JSON).build();
         }

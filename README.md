@@ -40,6 +40,14 @@ ln -s {path to project root}/target/ElasticSearchWrapper.war {path to wildfly se
   Params:
     - query                           - String      Required
     - sentiment                       - String      Not Required
+  Model:
+    - score                           - BigDecimal
+    - id                              - Int
+    - body                            - String
+    - title                           - String
+    - sentiment                       - String
+    - keyPhrases                      - Array
+      - value                         - String
 ```
 Example URL if you deploy war into `{Wildfly_home}/standalone/deployments` without renaming:
 ```
