@@ -33,11 +33,23 @@ ln -s {path to project root}/target/ElasticSearchWrapper.war {path to wildfly se
 
 ## API map
 
-```shell script
-- /             - GET
-- /api          - GET
+```
+- /                                   - GET         Gives you a html page
+- /api/v1                             - GET         REST API declaration
+- /api/v1/searchMatchWithSentiment    - GET         Entrypoint for searching on keywords
+  Params:
+    - query                           - String      Required
+    - sentiment                       - String      Not Required
+  Model:
+    - score                           - BigDecimal
+    - id                              - Int
+    - body                            - String
+    - title                           - String
+    - sentiment                       - String
+    - keyPhrases                      - Array
+      - value                         - String
 ```
 Example URL if you deploy war into `{Wildfly_home}/standalone/deployments` without renaming:
 ```
-http://localhost:8080/ElasticSearchWrapper/api
+http://localhost:8080/ElasticSearchWrapper/api/v1/
 ```
