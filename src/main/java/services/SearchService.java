@@ -35,6 +35,7 @@ public class SearchService {
         return resultArray;
     }
 
+
     public void writeToHttpConnection(HttpURLConnection connection, byte[] query) throws IOException {
         connection.setDoOutput(true);
         OutputStream outputStream = connection.getOutputStream();
@@ -45,12 +46,22 @@ public class SearchService {
 
     public byte[] makeKeyPhrasesQueryBody(SearchQuery searchQuery) {
         String query = "{\n" +
-                "    \"query\": {\n" +
-                "        \"match_phrase\" : {\n" +
-                "            \"keyPhrases\" : \"" + searchQuery.getUserSearchInput() + "\"\n" +
+                "  \"query\": {\n" +
+                "  \t\"bool\": {\n" +
+                "  \t  \"must\": {\n" +
+                "\t    \"multi_match\" : {\n" +
+                "          \"query\":      \""+ searchQuery.getUserSearchInput() +"\",\n" +
+                "          \"fields\":     [ \"title\", \"body\", \"keyPhrases\" ]\n" +
                 "        }\n" +
-                "    }\n" +
-                "}\n";
+                "      },\n" +
+                "      \"filter\": {\n" +
+                "      \t\"term\": {\n" +
+                "      \t\t\"sentiment\": \"" + searchQuery.getSortFlag() + "\"\n" +
+                "      \t}\n" +
+                "  \t  }\n" +
+                "  \t}\n" +
+                "  }\n" +
+                "}";
         byte[] bytes = new byte[0];
         try {
             bytes = query.getBytes(StandardCharsets.UTF_8.name());

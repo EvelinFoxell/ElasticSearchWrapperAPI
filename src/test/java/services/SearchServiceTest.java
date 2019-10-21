@@ -10,7 +10,6 @@ import static org.junit.Assert.assertNotNull;
 
 public class SearchServiceTest {
 
-    private RestHelper helper = new RestHelper();
     private SearchService service = new SearchService();
     private SearchQuery query = new SearchQuery();
 

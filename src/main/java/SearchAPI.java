@@ -32,7 +32,7 @@ public class SearchAPI {
         // TODO: Validate the input
         SearchQuery searchQuery = new SearchQuery(query, sentiment);
         JsonArray results = searchService.getSearchResults(searchQuery);
-        if(results == null) {
+        if(results == null || query == null) {
             return Response.status(400).encoding(MediaType.APPLICATION_JSON).build();
         }
         return Response.ok(results).encoding(MediaType.APPLICATION_JSON).build();
