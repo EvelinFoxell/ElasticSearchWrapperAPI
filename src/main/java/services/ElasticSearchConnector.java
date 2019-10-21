@@ -1,27 +1,28 @@
 package services;
 
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ElasticSearchConnector {
 
-    public static final String ELASTICSEARCH_URL = ResourceBundle.getBundle("Application").getString("elasticsearch.url");
+    private static final String ELASTICSEARCH_URL = ResourceBundle.getBundle("Application").getString("elasticsearch.restUrl");
+    private Logger logger = LoggerFactory.getLogger(ElasticSearchConnector.class);
 
-    public Client getElasticSearchClient() {
+    public HttpURLConnection getElasticSearchRESTConnection() {
         try {
-            Client client = new PreBuiltTransportClient(Settings.builder()
-                    .put("client.transport.sniff", true).put("cluster.name", "documents")
-                    .build())
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("127.0.0.1"), 9300));
-            return client;
-        } catch(Exception connectionException) {
-            // FIXME Implement proper logging
-            System.out.println("Could not create a client to connect to ElasticSearch: " + connectionException.getMessage());
+            URL url = new URL("http://" + ELASTICSEARCH_URL + "/documents/_search");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setRequestProperty("Content-Type", "application/json");
+            return conn;
+        }catch (IOException exception) {
+            logger.error("Could not connect to REST API: " + exception.getMessage());
             return null;
         }
     }
