@@ -47,19 +47,19 @@ public class SearchService {
     public byte[] makeKeyPhrasesQueryBody(SearchQuery searchQuery) {
         String query = "{\n" +
                 "  \"query\": {\n" +
-                "  \t\"bool\": {\n" +
-                "  \t  \"must\": {\n" +
-                "\t    \"multi_match\" : {\n" +
-                "          \"query\":      \""+ searchQuery.getUserSearchInput() +"\",\n" +
-                "          \"fields\":     [ \"title\", \"body\", \"keyPhrases\" ]\n" +
+                "    \"bool\": {\n" +
+                "      \"must\": {\n" +
+                "        \"multi_match\" : {\n" +
+                "          \"query\": \""+ searchQuery.getUserSearchInput() +"\",\n" +
+                "          \"fields\": [ \"title\", \"body\", \"keyPhrases\" ]\n" +
                 "        }\n" +
                 "      },\n" +
                 "      \"filter\": {\n" +
-                "      \t\"term\": {\n" +
-                "      \t\t\"sentiment\": \"" + searchQuery.getSortFlag() + "\"\n" +
-                "      \t}\n" +
-                "  \t  }\n" +
-                "  \t}\n" +
+                "        \"term\": {\n" +
+                "          \"sentiment\": \"" + searchQuery.getSortFlag() + "\"\n" +
+                "        }\n" +
+                "      }\n" +
+                "    }\n" +
                 "  }\n" +
                 "}";
         byte[] bytes = new byte[0];
